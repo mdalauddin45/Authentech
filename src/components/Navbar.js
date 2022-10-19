@@ -23,14 +23,14 @@ const Navbar = () => {
           <span className="ml-3 text-xl">AuthenTech</span>
         </Link>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-          <Link to="/hone" className="mr-5 hover:text-gray-900">
+          <Link to="/home" className="mr-5 hover:text-gray-900">
             Home
           </Link>
 
           <Link to="/profile" className="mr-5 hover:text-gray-900">
             Profile
           </Link>
-          <Link to="wllet" className="mr-5 hover:text-gray-900">
+          <Link to="wallet" className="mr-5 hover:text-gray-900">
             Wallet
           </Link>
           <button className="inline-flex items-center bg-gray-300 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
