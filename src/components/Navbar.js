@@ -1,19 +1,27 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   console.log(user);
 
   const handleLogOut = () => {
-    logOut();
+    logOut()
+      .then(() => {
+        toast.success("User Log Out");
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.message);
+      });
   };
   return (
     <header className="text-gray-600 body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <Link
-          to="#"
+          to="/"
           className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
         >
           <svg
