@@ -1,17 +1,11 @@
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/UserContext";
 
 const Register = () => {
-  const { createUser, updateName, verifyEmail } = useContext(AuthContext);
+  const { createUser, updateName, verifyEmail, googleSignIn } =
+    useContext(AuthContext);
   // Sign Up Useing Email and Pass
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,10 +43,9 @@ const Register = () => {
   };
 
   // Google Sign In
-  const googleProvider = new GoogleAuthProvider();
 
   const handleGoogleSignIn = () => {
-    signInWithPopup(auth, googleProvider)
+    googleSignIn()
       .then((result) => {
         const user = result.user;
         console.log(user);

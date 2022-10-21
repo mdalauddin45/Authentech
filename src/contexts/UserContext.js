@@ -1,7 +1,9 @@
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  GoogleAuthProvider,
   sendEmailVerification,
+  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import React from "react";
@@ -28,7 +30,13 @@ const UserContext = ({ children }) => {
     return sendEmailVerification(auth.currentUser);
   };
 
-  const authInfo = { user, createUser, updateName, verifyEmail };
+  //4. Google Sign in Popup
+  const googleProvider = new GoogleAuthProvider();
+  const googleSignIn = () => {
+    return signInWithPopup(auth, googleProvider);
+  };
+
+  const authInfo = { user, createUser, updateName, verifyEmail, googleSignIn };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
