@@ -22,7 +22,6 @@ const Register = () => {
     console.log(name, email, password);
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        // Signed in
         const user = result.user;
         console.log(user);
         updateProfile(auth.currentUser, {
