@@ -1,36 +1,37 @@
-import React, { createContext } from "react";
 import {
   createUserWithEmailAndPassword,
   getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
+  sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
-import app from "../firebase/firebase.config";
+import React from "react";
 import { useState } from "react";
+import { createContext } from "react";
+import app from "../firebase/firebase.config";
 
-const auth = getAuth(app);
 export const AuthContext = createContext();
-
-function UserContext() {
+const auth = getAuth(app);
+const UserContext = ({ children }) => {
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
 
-  const googleProvider = new GoogleAuthProvider();
-  //1. Create User
+  //1. create user
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  // Google Signin
-  const singinWithGoogle = () => {
-    return signInWithPopup(auth, googleProvider);
+  //2. Update Name
+  const updateName = (name) => {
+    return updateProfile(auth.currentUser, { displayName: name });
   };
 
-  const authInfo = {
-    user,
-    createUser,
-    singinWithGoogle,
+  //3. Email Verify
+  const verifyEmail = () => {
+    return sendEmailVerification(auth.currentUser);
   };
-  return <AuthContext.Provider value={authInfo}></AuthContext.Provider>;
-}
+
+  const authInfo = { user, createUser, updateName, verifyEmail };
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
+};
 
 export default UserContext;

@@ -5,13 +5,13 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import app from "../firebase/firebase.config";
+import { AuthContext } from "../contexts/UserContext";
 
-const auth = getAuth(app);
 const Register = () => {
+  const { createUser, updateName, verifyEmail } = useContext(AuthContext);
   // Sign Up Useing Email and Pass
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,19 +20,27 @@ const Register = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(name, email, password);
-    createUserWithEmailAndPassword(auth, email, password)
+
+    //1. create user
+    createUser(email, password)
       .then((result) => {
         const user = result.user;
         console.log(user);
-        updateProfile(auth.currentUser, {
-          displayName: name,
-          photoURL: "https://example.com/jane-q-user/profile.jpg",
-        })
+
+        //2. update name
+        updateName(name)
           .then(() => {
-            return toast.success("Name Update");
+            toast.success("Name Update");
+
+            //3. Email Verify
+            verifyEmail()
+              .then(() => {
+                toast.success("please Check your email for verification link");
+              })
+              .catch((error) => toast.error(error.message));
           })
           .catch((error) => {
-            return toast.error(error.message);
+            toast.error(error.message);
           });
       })
       .catch((error) => {
