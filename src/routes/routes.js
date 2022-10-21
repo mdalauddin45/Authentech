@@ -15,10 +15,10 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home></Home> },
       { path: "/home", element: <Home></Home> },
+      { path: "/login", element: <Login></Login> },
       { path: "/register", element: <Register></Register> },
       { path: "/wallet", element: <Wallet></Wallet> },
       { path: "/profile", element: <Profile></Profile> },
-      { path: "/login", element: <Login></Login> },
     ],
   },
 ]);
