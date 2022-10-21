@@ -1,10 +1,18 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import React from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import app from "../firebase/firebase.config";
 
 const auth = getAuth(app);
 const Register = () => {
+  // Sign Up Useing Email and Pass
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -17,9 +25,34 @@ const Register = () => {
         // Signed in
         const user = result.user;
         console.log(user);
+        updateProfile(auth.currentUser, {
+          displayName: name,
+          photoURL: "https://example.com/jane-q-user/profile.jpg",
+        })
+          .then(() => {
+            return toast.success("Name Update");
+          })
+          .catch((error) => {
+            return toast.error(error.message);
+          });
       })
       .catch((error) => {
         console.error(error);
+      });
+  };
+
+  // Google Sign In
+  const googleProvider = new GoogleAuthProvider();
+
+  const handleGoogleSignIn = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.message);
       });
   };
 
@@ -97,7 +130,11 @@ const Register = () => {
           <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
         </div>
         <div className="flex justify-center space-x-4">
-          <button aria-label="Log in with Google" className="p-3 rounded-sm">
+          <button
+            onClick={handleGoogleSignIn}
+            aria-label="Log in with Google"
+            className="p-3 rounded-sm"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 32 32"
