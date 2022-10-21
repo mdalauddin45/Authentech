@@ -2,11 +2,14 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
+  onAuthStateChanged,
   sendEmailVerification,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import app from "../firebase/firebase.config";
@@ -36,7 +39,31 @@ const UserContext = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
-  const authInfo = { user, createUser, updateName, verifyEmail, googleSignIn };
+  //5. Log out
+  const logOut = () => {
+    return signOut(auth);
+  };
+
+  useEffect(() => {
+    // eta run hobe  jkn component mount hobe
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => {
+      // eta run hobe  jkn component mount hobe
+      unsubscribe();
+    };
+  }, []);
+  const authInfo = {
+    user,
+    createUser,
+    updateName,
+    verifyEmail,
+    googleSignIn,
+    logOut,
+  };
+
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
