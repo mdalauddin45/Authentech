@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   sendEmailVerification,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
@@ -44,6 +45,14 @@ const UserContext = ({ children }) => {
     return signOut(auth);
   };
 
+  //6. Log in With Password
+
+  const signIn = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  //7. Forgation password
+
   useEffect(() => {
     // eta run hobe  jkn component mount hobe
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -62,6 +71,7 @@ const UserContext = ({ children }) => {
     verifyEmail,
     googleSignIn,
     logOut,
+    signIn,
   };
 
   return (
